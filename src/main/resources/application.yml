@@ -1,4 +1,6 @@
 spring:
+  port: 8080
+  forward-headers-strategy: framework
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
 
@@ -9,3 +11,16 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /v3/api-docs
+    display-request-duration: true
+    groups-order: ASC
+
+logging:
+  level:
+    com.ganzi.backend: info
