@@ -2,6 +2,8 @@ package com.ganzi.backend.global.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.ganzi.backend.global.code.status.ErrorStatus;
+import com.ganzi.backend.global.exception.GeneralException;
 import java.io.IOException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +30,7 @@ public class S3Uploader {
 
             amazonS3.putObject(bucket, fileName, file.getInputStream(), metadata);
         } catch (IOException e) {
-            // TODO 공통 예외 처리로 변경 예정
-            throw new IllegalArgumentException(e.getMessage());
+            throw new GeneralException(ErrorStatus.S3_UPLOAD_FAILED);
         }
 
         return amazonS3.getUrl(bucket, fileName).toString();
