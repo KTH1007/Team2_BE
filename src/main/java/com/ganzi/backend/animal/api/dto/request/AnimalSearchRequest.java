@@ -4,14 +4,17 @@ import com.ganzi.backend.animal.domain.AnimalType;
 import com.ganzi.backend.animal.domain.NeuterStatus;
 import com.ganzi.backend.animal.domain.Sex;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Pattern;
 
 @Schema(description = "유기동물 검색 조건")
 public record AnimalSearchRequest(
 
-        @Schema(description = "검색 시작일", example = "20250809")
+        @Schema(description = "검색 시작일 (yyyyMMdd)", example = "20250809")
+        @Pattern(regexp = "^\\d{8}$", message = "날짜 형식은 yyyyMMdd 형식이어야 합니다")
         String startDate,
 
-        @Schema(description = "검색 종료일", example = "20251109")
+        @Schema(description = "검색 종료일 (yyyyMMdd)", example = "20251109")
+        @Pattern(regexp = "^\\d{8}$", message = "날짜 형식은 yyyyMMdd 형식이어야 합니다")
         String endDate,
 
         @Schema(description = "시/도", example = "서울특별시")
