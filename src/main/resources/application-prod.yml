@@ -36,3 +36,11 @@ jwt:
   refresh:
     expiration: ${JWT_REFRESH_EXPIRATION:1209600000}
     header: RefreshToken
+
+upstage:
+  api:
+    base-url: ${UPSTAGE_API_BASE_URL:https://api.upstage.ai/v1}
+    key: ${UPSTAGE_API_KEY}
+  embedding:
+    endpoint: /solar/embeddings
+    model: solar-embedding-1-large-passage

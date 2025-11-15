@@ -72,6 +72,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
           ANIMAL_API_SERVICE_KEY: ${{ secrets.ANIMAL_API_SERVICE_KEY }}
+          UPSTAGE_API_KEY: ${{ secrets.UPSTAGE_API_KEY }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
@@ -81,7 +82,8 @@ jobs:
             DB_HOST,DB_PORT,DB_NAME,DB_USERNAME,DB_PASSWORD,
             S3_REGION,S3_BUCKET_NAME,
             AWS_ACCESS_KEY,AWS_SECRET_ACCESS_KEY,
-            JWT_SECRET_KEY,ANIMAL_API_SERVICE_KEY
+            JWT_SECRET_KEY,ANIMAL_API_SERVICE_KEY,
+            UPSTAGE_API_KEY
           script: |
             aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $(echo $IMAGE_URI | cut -d'/' -f1)
 
@@ -104,4 +106,5 @@ jobs:
               -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
               -e JWT_SECRET_KEY=$JWT_SECRET_KEY \
               -e ANIMAL_API_SERVICE_KEY=$ANIMAL_API_SERVICE_KEY \
+              -e UPSTAGE_API_KEY=$UPSTAGE_API_KEY \
               $IMAGE_URI:$IMAGE_TAG
