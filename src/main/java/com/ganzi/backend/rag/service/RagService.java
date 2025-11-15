@@ -6,6 +6,7 @@ import com.ganzi.backend.global.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -44,47 +45,51 @@ public class RagService {
 
     public RagResponse getAnswer(RagRequest request){
         log.info("RAG Service 진입 - 쿼리: {}", request.query());
-        return callUpstageApi(request.query());
+        Map<String, Object> requestBody = buildApiRequest(request.query());
+        UpstageApiResponse apiResponse = fetchApiResponse(requestBody);
+        String answer = extractAnswerFromResponse(apiResponse);
+        // List<SourceDocument> sources = List.of();
+        return new RagResponse(answer);
     }
 
-    // API 호출 로직을 분리
-    private RagResponse callUpstageApi(String query){
-        log.debug("Upstage Endpoint URL: {}", endpointUrl);
-        //log.debug("RAG ID: {}", ragId);
-
+    private Map<String, Object> buildApiRequest(String query) {
         Map<String, Object> message = Map.of(
                 "role", "user",
                 "content", query
         );
-        Map<String, Object> requestBody = Map.of(
+
+        return Map.of(
                 "model", "solar-pro2",
-                //"rag_id", List.of(ragId),
                 "messages", List.of(message),
                 "stream", false
+                //"rag_ids", List.of(ragId)
         );
-        log.debug("Request Body: {}", requestBody);
+    }
+    // API 호출 로직을 분리
+    private UpstageApiResponse fetchApiResponse(Map<String,Object> requestBody) {
 
-        UpstageApiResponse apiResponse = ragApiClient.post()
+        return ragApiClient.post()
                 .uri(endpointUrl)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer "+apiKey)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(requestBody)
                 .retrieve()
-                .onStatus(status->status.is4xxClientError() || status.is5xxServerError(),
-                        clientResponse -> {
-                            // API 호출 실패 시 HTTP 상태 코드와 응답 본문을 로그에 기록합니다.
-                            log.error("Upstage API 호출 실패! HTTP Status: {}", clientResponse.statusCode());
-
-                            // 응답 본문을 String으로 읽어 추가 로그 기록 (오류 진단 핵심)
-                            return clientResponse.bodyToMono(String.class)
-                                    .flatMap(body -> {
-                                        log.error("Upstage API 응답 본문: {}", body);
-                                        return Mono.error(new GeneralException(ErrorStatus.RAG_API_CALL_FAILED));
-                                    });
-                        })
+                .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(),
+                        this::handleApiError)
                 .bodyToMono(UpstageApiResponse.class)//응답을 임시 DTO로 변환
                 .block();   //비동기 코드를 동시적으로 기다림
+    }
+    private Mono<Throwable> handleApiError(ClientResponse clientResponse){
+        log.error("Upstage API 호출 실패! HTTP Status: {}", clientResponse.statusCode());
+        return clientResponse.bodyToMono(String.class)
+                .flatMap(body -> {
+                    log.error("Upstage API 응답 본문: {}", body);
+                    return Mono.error(new GeneralException(ErrorStatus.RAG_API_CALL_FAILED));
+                });
 
+    }
+
+    private String extractAnswerFromResponse(UpstageApiResponse apiResponse) {
         String answer = Optional.ofNullable(apiResponse)
                 .flatMap(r -> r.choices().stream().findFirst())
                 .map(c -> c.message())
@@ -96,9 +101,6 @@ public class RagService {
             throw new GeneralException(ErrorStatus.RAG_API_INTERNAL_FAILURE);
         }
 
-        //List<SourceDocument> sources = List.of();
-
-        //6. Upstage DTO를 프로젝트의 RagResponse로 변환하여 반환
-        return new RagResponse(answer);
+        return answer;
     }
 }
