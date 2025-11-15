@@ -52,8 +52,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 5001,5002
     // RAG 관련 오류 코드
-    RAG_API_CALL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "RAG501", "RAG API 호출에 실패했습니다. (외부 서버 응답 오류)"),
-    RAG_API_INTERNAL_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "RAG502", "RAG API 호출은 성공했으나, 내부 처리 중 오류가 발생했습니다."),
+    RAG_API_CALL_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "RAG500", "RAG API 호출에 실패했습니다. (외부 서버 응답 오류)"),
+    RAG_API_INTERNAL_FAILURE(HttpStatus.INTERNAL_SERVER_ERROR, "RAG501", "RAG API 호출은 성공했으나, 내부 처리 중 오류가 발생했습니다."),
 
     // 502, 503, 504
     BAD_GATEWAY(HttpStatus.BAD_GATEWAY, "COMMON502", "불완전한 게이트웨이 응답을 받았습니다."),
