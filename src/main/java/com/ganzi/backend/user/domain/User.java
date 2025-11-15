@@ -1,4 +1,4 @@
-package com.ganzi.backend.user;
+package com.ganzi.backend.user.domain;
 
 import com.ganzi.backend.global.entity.BaseEntity;
 import com.ganzi.backend.global.oauth.domain.SocialProvider;

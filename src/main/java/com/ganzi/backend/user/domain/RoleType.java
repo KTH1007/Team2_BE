@@ -1,4 +1,4 @@
-package com.ganzi.backend.user;
+package com.ganzi.backend.user.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package com.ganzi.backend.global.security.jwt;
 
 import com.ganzi.backend.global.code.status.ErrorStatus;
 import com.ganzi.backend.global.exception.GeneralException;
-import com.ganzi.backend.user.User;
-import com.ganzi.backend.user.repository.UserRepository;
+import com.ganzi.backend.user.domain.User;
+import com.ganzi.backend.user.domain.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
