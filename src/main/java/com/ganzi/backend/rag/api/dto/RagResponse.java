@@ -1,8 +1,11 @@
 package com.ganzi.backend.rag.api.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "챗봇 답변 응답")
 public record RagResponse (
 
-    // LLM이 생성한 최종 답변
+    @Schema(description = "LLM이 생성한 답변")
     String answer
 
    //RAG 사용 x (의미 없음)
