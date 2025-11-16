@@ -1,8 +1,8 @@
 package com.ganzi.backend.rag.application;
 
-import com.ganzi.backend.rag.api.dto.RagRequest;
-import com.ganzi.backend.rag.api.dto.RagResponse;
-import com.ganzi.backend.rag.api.dto.UpstageApiResponse;
+import com.ganzi.backend.rag.api.dto.request.RagRequest;
+import com.ganzi.backend.rag.api.dto.response.RagResponse;
+import com.ganzi.backend.rag.api.dto.response.UpstageApiResponse;
 import com.ganzi.backend.global.exception.GeneralException;
 import com.ganzi.backend.global.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;

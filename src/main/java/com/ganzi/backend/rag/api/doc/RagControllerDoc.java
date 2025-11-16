@@ -2,8 +2,8 @@ package com.ganzi.backend.rag.api.doc;
 
 import com.ganzi.backend.global.code.dto.ApiResponse;
 import com.ganzi.backend.global.security.userdetails.CustomUserDetails;
-import com.ganzi.backend.rag.api.dto.RagRequest;
-import com.ganzi.backend.rag.api.dto.RagResponse;
+import com.ganzi.backend.rag.api.dto.request.RagRequest;
+import com.ganzi.backend.rag.api.dto.response.RagResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

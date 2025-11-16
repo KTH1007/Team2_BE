@@ -1,4 +1,4 @@
-package com.ganzi.backend.rag.api.dto;
+package com.ganzi.backend.rag.api.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

@@ -1,4 +1,4 @@
-package com.ganzi.backend.rag.api.dto;
+package com.ganzi.backend.rag.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

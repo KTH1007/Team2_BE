@@ -1,4 +1,4 @@
-package com.ganzi.backend.rag.api.dto;
+package com.ganzi.backend.rag.api.dto.response;
 
 // 응답에 포함될 출처 정보
 // RAG 사용 불가한 현시점에서는 의미 x
