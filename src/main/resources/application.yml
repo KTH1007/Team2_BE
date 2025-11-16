@@ -34,6 +34,13 @@ animal:
       read: 60000
 
 upstage:
+  api:
+    base-url: ${UPSTAGE_API_BASE_URL:https://api.upstage.ai/v1}
+    key: ${UPSTAGE_API_KEY}
+  embedding:
+    endpoint: /solar/embeddings
+    model: solar-embedding-1-large-passage
+
   ai-space:
-    api-key: ${UPSTAGE_API_KEY}
-    endpoint-url: "https://api.upstage.ai/v1/chat/completions"
+    api-key: ${UPSTAGE_AI_API_KEY}
+    endpoint-url: ${UPSTAGE_AI_SPACE_ENDPOINT_URL:https://api.upstage.ai/v1/chat/completions}
