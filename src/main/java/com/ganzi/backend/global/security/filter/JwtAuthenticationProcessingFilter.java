@@ -2,8 +2,8 @@ package com.ganzi.backend.global.security.filter;
 
 import com.ganzi.backend.global.security.jwt.JwtService;
 import com.ganzi.backend.global.security.userdetails.CustomUserDetails;
-import com.ganzi.backend.user.User;
-import com.ganzi.backend.user.repository.UserRepository;
+import com.ganzi.backend.user.domain.User;
+import com.ganzi.backend.user.domain.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

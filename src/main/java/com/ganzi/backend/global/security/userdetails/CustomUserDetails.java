@@ -1,6 +1,6 @@
 package com.ganzi.backend.global.security.userdetails;
 
-import com.ganzi.backend.user.User;
+import com.ganzi.backend.user.domain.User;
 import java.util.Collection;
 import java.util.Collections;
 import lombok.Getter;

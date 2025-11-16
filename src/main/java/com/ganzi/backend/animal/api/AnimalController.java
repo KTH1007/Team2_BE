@@ -6,6 +6,9 @@ import com.ganzi.backend.animal.api.dto.response.AnimalDetailResponse;
 import com.ganzi.backend.animal.api.dto.response.AnimalListResponse;
 import com.ganzi.backend.animal.application.AnimalService;
 import com.ganzi.backend.global.code.dto.ApiResponse;
+import com.ganzi.backend.global.security.userdetails.CustomUserDetails;
+import com.ganzi.backend.user.api.dto.RecordInterestRequest;
+import com.ganzi.backend.user.application.UserInterestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AnimalController implements AnimalControllerDoc {
 
     private final AnimalService animalService;
+    private final UserInterestService userInterestService;
 
     @Override
     @GetMapping
@@ -39,8 +40,21 @@ public class AnimalController implements AnimalControllerDoc {
 
     @Override
     @GetMapping("/{desertionNo}")
-    public ResponseEntity<ApiResponse<AnimalDetailResponse>> findAnimalById(@PathVariable String desertionNo) {
+    public ResponseEntity<ApiResponse<AnimalDetailResponse>> findAnimalById(
+            @PathVariable String desertionNo
+    ) {
         AnimalDetailResponse response = animalService.findAnimalById(desertionNo);
         return ResponseEntity.ok(ApiResponse.onSuccess(response));
+    }
+
+    @Override
+    @PostMapping("/interests")
+    public ResponseEntity<ApiResponse<Void>> recordUserInterest(
+            @Valid @RequestBody RecordInterestRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getUser().getId();
+        userInterestService.recordInterest(userId, request.desertionNo(), request.dwellTimeSeconds(), request.liked());
+        return ResponseEntity.ok(ApiResponse.onSuccess(null));
     }
 }

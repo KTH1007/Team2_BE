@@ -2,8 +2,8 @@ package com.ganzi.backend.global.oauth.domain;
 
 import com.ganzi.backend.global.oauth.domain.info.KakaoUserInfo;
 import com.ganzi.backend.global.oauth.domain.info.UserInfo;
-import com.ganzi.backend.user.RoleType;
-import com.ganzi.backend.user.User;
+import com.ganzi.backend.user.domain.RoleType;
+import com.ganzi.backend.user.domain.User;
 import java.util.Map;
 import lombok.Getter;
 

@@ -29,7 +29,7 @@ public class AnimalEmbeddingService {
     @Transactional
     public void generateAllEmbeddings() {
         List<Animal> animals = animalRepository.findAll();
-        log.info("Generating embeddings for {} animals", animals.size());
+        log.info("{} 개의 동물 임베딩을 생성 중입니다", animals.size());
         for (Animal animal : animals) {
             generateEmbedding(animal);
         }
@@ -43,7 +43,7 @@ public class AnimalEmbeddingService {
         }
         List<float[]> vectors = embeddingClient.embedTexts(List.of(input));
         if (vectors.isEmpty()) {
-            log.warn("No embedding returned for animal {}", animal.getDesertionNo());
+            log.warn("DesertionNo : {} , 해당 유기동물 임베딩에 실패했습니다", animal.getDesertionNo());
             return;
         }
         float[] vector = vectors.getFirst();
@@ -56,7 +56,7 @@ public class AnimalEmbeddingService {
                     .build();
             embeddingRepository.save(embedding);
         } catch (JsonProcessingException e) {
-            log.error("Failed to serialize embedding for animal {}", animal.getDesertionNo(), e);
+            log.error("DesertionNo : {}, 직렬화에 실패했습니다", animal.getDesertionNo(), e);
         }
     }
 }

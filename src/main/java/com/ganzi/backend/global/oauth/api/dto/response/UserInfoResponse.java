@@ -1,7 +1,7 @@
 package com.ganzi.backend.global.oauth.api.dto.response;
 
-import com.ganzi.backend.user.RoleType;
-import com.ganzi.backend.user.User;
+import com.ganzi.backend.user.domain.RoleType;
+import com.ganzi.backend.user.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "사용자 정보 응답")

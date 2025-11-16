@@ -2,7 +2,7 @@ package com.ganzi.backend.global.config;
 
 import com.ganzi.backend.global.security.filter.JwtAuthenticationProcessingFilter;
 import com.ganzi.backend.global.security.jwt.JwtService;
-import com.ganzi.backend.user.repository.UserRepository;
+import com.ganzi.backend.user.domain.repository.UserRepository;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
