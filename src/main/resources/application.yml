@@ -32,3 +32,8 @@ animal:
     timeout:
       connect: 10000
       read: 60000
+
+upstage:
+  ai-space:
+    api-key: ${UPSTAGE_API_KEY}
+    endpoint-url: "https://api.upstage.ai/v1/chat/completions"
