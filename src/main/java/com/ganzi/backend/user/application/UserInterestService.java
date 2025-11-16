@@ -1,4 +1,4 @@
-package com.ganzi.backend.user;
+package com.ganzi.backend.user.application;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -70,7 +70,7 @@ public class UserInterestService {
 
         for (UserInterest ui : interests) {
             Optional<AnimalEmbedding> optAnimalEmbedding =
-                    animalEmbeddingRepository.findByDesertionNo(ui.getAnimal().getDesertionNo());
+                    animalEmbeddingRepository.findById(ui.getAnimal().getDesertionNo());
 
             if (optAnimalEmbedding.isEmpty()) {
                 continue;
