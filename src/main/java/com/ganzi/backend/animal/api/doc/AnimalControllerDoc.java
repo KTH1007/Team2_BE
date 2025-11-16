@@ -4,12 +4,14 @@ import com.ganzi.backend.animal.api.dto.request.AnimalSearchRequest;
 import com.ganzi.backend.animal.api.dto.response.AnimalDetailResponse;
 import com.ganzi.backend.animal.api.dto.response.AnimalListResponse;
 import com.ganzi.backend.global.code.dto.ApiResponse;
+import com.ganzi.backend.global.security.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -111,6 +113,8 @@ public interface AnimalControllerDoc {
     )
     ResponseEntity<ApiResponse<AnimalDetailResponse>> findAnimalById(
             @Parameter(description = "유기동물 구조번호 (desertionNo)")
-            @PathVariable String desertionNo
+            @PathVariable String desertionNo,
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal CustomUserDetails userDetails
     );
 }
