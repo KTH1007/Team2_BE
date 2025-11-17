@@ -48,7 +48,18 @@ public class RecommendationService {
                     .toList();
         }
 
+        List<RecommendationScore> scores = calculateScores(userVector, embeddings);
+        scores.sort(Comparator.comparingDouble(RecommendationScore::score).reversed());
+
+        return scores.stream()
+                .limit(top)
+                .map(RecommendationScore::desertionNo)
+                .toList();
+    }
+
+    private List<RecommendationScore> calculateScores(float[] userVector, List<AnimalEmbedding> embeddings) {
         List<RecommendationScore> scores = new ArrayList<>();
+
         for (AnimalEmbedding emb : embeddings) {
             try {
                 float[] animalVector = objectMapper.readValue(
@@ -59,15 +70,11 @@ public class RecommendationService {
                 double score = cosineSimilarity(userVector, animalVector);
                 scores.add(new RecommendationScore(emb.getDesertionNo(), score));
             } catch (JsonProcessingException e) {
-                log.warn("animal {} 임베딩 오류 : 역직렬화 실패", emb.getDesertionNo(), e);
+                log.warn("animal {} 임베딩 오류 : Score 계산 실패", emb.getDesertionNo(), e);
             }
         }
-        scores.sort(Comparator.comparingDouble(RecommendationScore::score).reversed());
 
-        return scores.stream()
-                .limit(top)
-                .map(RecommendationScore::desertionNo)
-                .toList();
+        return scores;
     }
 
 
