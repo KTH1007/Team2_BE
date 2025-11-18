@@ -21,7 +21,6 @@ public class UserLikeController implements UserLikeControllerDoc {
 
     @Override
     @PostMapping("/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> recordUserLike(
             @PathVariable("userId") Long userId,
             @Valid @RequestBody RecordLikeRequest request
@@ -32,7 +31,6 @@ public class UserLikeController implements UserLikeControllerDoc {
 
     @Override
     @GetMapping("/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<String>>> getUserLikes(
             @PathVariable("userId") Long userId
     ) {

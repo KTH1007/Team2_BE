@@ -19,7 +19,6 @@ public class UserInterestController implements UserInterestControllerDoc {
 
     @Override
     @PostMapping("/{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> recordUserInterest(
             @PathVariable("userId") Long userId,
             @Valid @RequestBody RecordInterestRequest request
@@ -34,7 +33,6 @@ public class UserInterestController implements UserInterestControllerDoc {
 
     @Override
     @PostMapping("/{userId}/embedding")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> recomputeUserEmbedding(
             @PathVariable("userId") Long userId
     ) {
