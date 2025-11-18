@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "유기동물", description = "유기동물 조회 API")
 public interface AnimalControllerDoc {
@@ -122,5 +124,42 @@ public interface AnimalControllerDoc {
     ResponseEntity<ApiResponse<Void>> recordUserInterest(
             @Valid @RequestBody RecordInterestRequest request,
             @AuthenticationPrincipal CustomUserDetails userDetails
+    );
+
+    @Operation(
+            summary = "시/도 목록 조회",
+            description = """
+                      검색 필터에 사용할 수 있는 시/도 목록을 조회합니다.
+
+                      ### 응답 데이터
+                      - DB에 저장된 고유한 시/도 목록
+                      - 가나다순으로 정렬
+                      - null 값은 제외
+                      """
+    )
+    ResponseEntity<ApiResponse<List<String>>> findProvinces();
+
+    @Operation(
+            summary = "시/군/구 목록 조회",
+            description = """
+                      검색 필터에 사용할 수 있는 시/군/구 목록을 조회합니다.
+
+                      ### 쿼리 파라미터
+                      - `province`: 특정 시/도의 시/군/구만 조회 (선택사항)
+                      - 입력하지 않으면 전체 시/군/구 목록 반환
+
+                      ### 응답 데이터
+                      - DB에 저장된 고유한 시/군/구 목록
+                      - 가나다순으로 정렬
+                      - null 값은 제외
+
+                      ### 사용 예시
+                      1. 전체 시/군/구 조회: `/api/animals/cities`
+                      2. 특정 시/도의 시/군/구 조회: `/api/animals/cities?province=서울특별시`
+                      """
+    )
+    ResponseEntity<ApiResponse<List<String>>> findCities(
+            @Parameter(description = "시/도 (선택사항, 입력 시 해당 시/도의 시/군/구만 조회)")
+            @RequestParam(required = false) String province
     );
 }
