@@ -54,7 +54,7 @@ public class AnimalController implements AnimalControllerDoc {
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         Long userId = userDetails.getUser().getId();
-        userInterestService.recordInterest(userId, request.desertionNo(), request.dwellTimeSeconds(), request.liked());
+        userInterestService.recordInterest(userId, request.desertionNo(), request.dwellTimeSeconds());
         return ResponseEntity.ok(ApiResponse.onSuccess(null));
     }
 }
