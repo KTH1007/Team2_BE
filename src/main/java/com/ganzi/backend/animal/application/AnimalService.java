@@ -7,6 +7,7 @@ import com.ganzi.backend.animal.domain.Animal;
 import com.ganzi.backend.animal.domain.repository.AnimalRepository;
 import com.ganzi.backend.global.code.status.ErrorStatus;
 import com.ganzi.backend.global.exception.GeneralException;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,5 +31,13 @@ public class AnimalService {
         Animal animal = animalRepository.findById(desertionNo)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.ANIMAL_NOT_FOUND));
         return AnimalDetailResponse.from(animal);
+    }
+
+    public List<String> findProvinces() {
+        return animalRepository.findDistinctProvinces();
+    }
+
+    public List<String> findCities(String province) {
+        return animalRepository.findDistinctCitesByProvince(province);
     }
 }
