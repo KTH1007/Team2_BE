@@ -1,8 +1,9 @@
 package com.ganzi.backend.user.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-public record RecordInterestRequest (
+public record RecordLikeRequest(
         @NotBlank String desertionNo,
-        Integer dwellTimeSeconds
-){}
+        @NotNull Boolean liked
+){ }
