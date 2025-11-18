@@ -1,9 +1,9 @@
 package com.ganzi.backend.user.api;
 
 import com.ganzi.backend.global.code.dto.ApiResponse;
-import com.ganzi.backend.user.application.UserInterestService;
 import com.ganzi.backend.user.api.doc.UserInterestControllerDoc;
 import com.ganzi.backend.user.api.dto.RecordInterestRequest;
+import com.ganzi.backend.user.application.UserInterestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +18,27 @@ public class UserInterestController implements UserInterestControllerDoc {
     private final UserInterestService userInterestService;
 
     @Override
-    @PostMapping("/{userId}/interests")
+    @PostMapping("/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<String>> recordUserInterest(
             @PathVariable("userId") Long userId,
-            @Valid @RequestBody RecordInterestRequest request) {
-
+            @Valid @RequestBody RecordInterestRequest request
+    ) {
         userInterestService.recordInterest(
                 userId,
                 request.desertionNo(),
-                request.dwellTimeSeconds(),
-                request.liked()
+                request.dwellTimeSeconds()
         );
+        return ResponseEntity.ok(ApiResponse.onSuccess("사용자 행동 로그를 저장했습니다."));
+    }
 
-        return ResponseEntity.ok(ApiResponse.onSuccess("유저의 행동 데이터를 기록하였습니다"));
+    @Override
+    @PostMapping("/{userId}/embedding")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<String>> recomputeUserEmbedding(
+            @PathVariable("userId") Long userId
+    ) {
+        userInterestService.computeUserEmbedding(userId);
+        return ResponseEntity.ok(ApiResponse.onSuccess("사용자 관심 임베딩을 갱신했습니다."));
     }
 }
