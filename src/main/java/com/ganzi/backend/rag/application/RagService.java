@@ -60,19 +60,33 @@ public class RagService {
         return new RagResponse(cleanAnswer);
     }
 
+    private final String SYSTEM_PROMPT=
+            "넌 지금부터 유기동물 분양 정보 사이트 상담사야. " +
+                    "존댓말 써"+
+                    "답변은 마크다운 없이 정확하고 완결성 있고 간결한 답을 해" +
+                    "다음 질문 유도(예:'더 궁금한 점은 없으신가요?')는 절대 하지 마." +
+                    "이전 대화 기록은 절대 참고하지 말고, 오직 현재 질문에 대해서만 답변해.";
+
     private Map<String, Object> buildApiRequest(String query) {
+        Map<String, Object> systemMessage = Map.of(
+                "role", "system",
+                "content", SYSTEM_PROMPT
+        );
+
         Map<String, Object> message = Map.of(
                 "role", "user",
                 "content", query
         );
 
+
         return Map.of(
                 "model", "solar-pro2",
-                "messages", List.of(message),
+                "messages", List.of(systemMessage,message),
                 "stream", false
                 //"rag_ids", List.of(ragId)
         );
     }
+
     // API 호출 로직을 분리
     private UpstageApiResponse fetchApiResponse(Map<String,Object> requestBody) {
 
