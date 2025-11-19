@@ -36,12 +36,16 @@ public class RagService {
     //@Value("${upstage.ai-space.rag-id}")
     //private String ragId;
 
+    private String removeMarkdown(String text) {
+        if (text == null) return "";
+        return text.replaceAll("[#*_\\[\\]`]", "")
+                .replaceAll("(?m)^\\s*[-•]\\s+", "");
+    }
+
     public List<String> getFaqList() {
         return List.of(
-                "유기동물 입양 절차 알려주세요!",
-                "한국에서 가장 인기많은 반려동물은 뭔가요?",
-                "입양 전 보호소 방문이 가능한가요?"
-
+                "유기동물 입양 절차 알려줘!",
+                "입양 전 방문이 가능한가요?"
         );
     }
 
@@ -49,9 +53,11 @@ public class RagService {
         log.info("RAG Service 진입 - 쿼리: {}", request.query());
         Map<String, Object> requestBody = buildApiRequest(request.query());
         UpstageApiResponse apiResponse = fetchApiResponse(requestBody);
-        String answer = extractAnswerFromResponse(apiResponse);
+
+        String rawAnswer = extractAnswerFromResponse(apiResponse);
+        String cleanAnswer = removeMarkdown(rawAnswer);
         // List<SourceDocument> sources = List.of();
-        return new RagResponse(answer);
+        return new RagResponse(cleanAnswer);
     }
 
     private Map<String, Object> buildApiRequest(String query) {
