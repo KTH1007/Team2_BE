@@ -3,6 +3,7 @@ package com.ganzi.backend.recommendation.api.doc;
 import com.ganzi.backend.global.code.dto.ApiResponse;
 import com.ganzi.backend.animal.api.dto.response.AnimalDetailResponse;
 import com.ganzi.backend.global.security.userdetails.CustomUserDetails;
+import com.ganzi.backend.recommendation.infrastructure.dto.RecommendationSummaryResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,9 @@ public interface RecommendationControllerDoc {
     ResponseEntity<ApiResponse<List<AnimalDetailResponse>>> recommendAnimals(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestParam(value = "top", defaultValue = "8") Integer top
+    );
+
+    ResponseEntity<ApiResponse<RecommendationSummaryResponse>> getUserRecommendSummary(
+            @AuthenticationPrincipal CustomUserDetails userDetails
     );
 }
