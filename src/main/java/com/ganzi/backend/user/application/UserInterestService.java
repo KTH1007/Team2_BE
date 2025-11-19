@@ -69,22 +69,8 @@ public class UserInterestService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
-        Map<String, Double> weightMap = new HashMap<>();
-
-        List<UserInterest> interests = userInterestRepository.findByUserId(user.getId());
-        for (UserInterest ui : interests) {
-            int dwellSec = ui.getDwellTimeSeconds() != null ? ui.getDwellTimeSeconds() : 0;
-            double weight = 0.1 + dwellSec * 0.02;
-            weight = Math.min(weight, 0.3);
-            weightMap.merge(ui.getAnimal().getDesertionNo(), weight, Double::sum);
-        }
-
-        List<UserLike> likes = userLikeRepository.findByUserIdAndLikedTrue(user.getId());
-        for (UserLike like : likes) {
-            weightMap.merge(like.getAnimal().getDesertionNo(), 1.0, Double::sum);
-        }
-
-        if (weightMap.isEmpty()) {
+        Map<String, Double> weightMap = buildWeightMap(user);
+        if(weightMap.isEmpty()) {
             return;
         }
 
@@ -147,5 +133,34 @@ public class UserInterestService {
             log.error("User Embedding 직렬화 실패 userId={}", user.getId(), e);
             throw new GeneralException(ErrorStatus.DATABASE_ERROR);
         }
+    }
+
+
+
+    @Transactional(readOnly = true)
+    public Map<String, Double> buildWeightMap(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+        return buildWeightMap(user);
+    }
+
+    // 내부 재사용 메서드
+    private Map<String, Double> buildWeightMap(User user) {
+        Map<String, Double> weightMap = new HashMap<>();
+
+        List<UserInterest> interests = userInterestRepository.findByUserId(user.getId());
+        for (UserInterest ui : interests) {
+            int dwellSec = ui.getDwellTimeSeconds() != null ? ui.getDwellTimeSeconds() : 0;
+            double weight = 0.1 + dwellSec * 0.02;
+            weight = Math.min(weight, 0.3);
+            weightMap.merge(ui.getAnimal().getDesertionNo(), weight, Double::sum);
+        }
+
+        List<UserLike> likes = userLikeRepository.findByUserIdAndLikedTrue(user.getId());
+        for (UserLike like : likes) {
+            weightMap.merge(like.getAnimal().getDesertionNo(), 1.0, Double::sum);
+        }
+
+        return weightMap;
     }
 }
