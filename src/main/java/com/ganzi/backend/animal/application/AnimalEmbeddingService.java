@@ -11,13 +11,13 @@ import com.ganzi.backend.animal.infrastructure.mapper.AnimalEmbeddingMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class AnimalEmbeddingService {
 
     private final AnimalRepository animalRepository;
@@ -26,13 +26,25 @@ public class AnimalEmbeddingService {
     private final AnimalEmbeddingMapper embeddingMapper;
     private final ObjectMapper objectMapper;
 
+    @Async("embeddingExecutor")
     @Transactional
-    public void generateAllEmbeddings() {
+    public void generateAllEmbeddingsAsync() {
         List<Animal> animals = animalRepository.findAll();
         log.info("{} 개의 동물 임베딩을 생성 중입니다", animals.size());
+
+        int success = 0;
+        int fail = 0;
+
         for (Animal animal : animals) {
-            generateEmbedding(animal);
+            try {
+                generateEmbedding(animal);
+                success++;
+            } catch (Exception e) {
+                fail++;
+                log.warn("임베딩 생성 실패 desertionNo={}", animal.getDesertionNo(), e);
+            }
         }
+        log.info("동물 임베딩 생성 완료 - 성공: {}, 실패: {}", success, fail);
     }
 
     @Transactional
@@ -49,12 +61,14 @@ public class AnimalEmbeddingService {
         float[] vector = vectors.getFirst();
         try {
             String json = objectMapper.writeValueAsString(vector);
-            AnimalEmbedding embedding = AnimalEmbedding.builder()
-                    .animal(animal)
-                    .embeddingJson(json)
-                    .dimension(vector.length)
-                    .build();
+            AnimalEmbedding embedding = embeddingRepository.findById(animal.getDesertionNo())
+                    .orElseGet(() -> AnimalEmbedding.builder()
+                            .animal(animal)
+                            .build());
+
+            embedding.updateEmbedding(json, vector.length);
             embeddingRepository.save(embedding);
+
         } catch (JsonProcessingException e) {
             log.error("DesertionNo : {}, 직렬화에 실패했습니다", animal.getDesertionNo(), e);
         }
