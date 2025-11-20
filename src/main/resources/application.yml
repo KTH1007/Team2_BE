@@ -1,6 +1,8 @@
-spring:
+server:
   port: 8080
   forward-headers-strategy: framework
+
+spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
 
@@ -40,7 +42,9 @@ upstage:
   embedding:
     endpoint: /solar/embeddings
     model: solar-embedding-1-large-passage
-
+  chat:
+    url: https://api.upstage.ai/v1/solar/chat/completions
+    model: solar-pro2
   ai-space:
     api-key: ${UPSTAGE_AI_API_KEY}
     endpoint-url: ${UPSTAGE_AI_SPACE_ENDPOINT_URL:https://api.upstage.ai/v1/chat/completions}
