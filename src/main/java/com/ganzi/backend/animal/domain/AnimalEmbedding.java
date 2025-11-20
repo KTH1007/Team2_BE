@@ -23,4 +23,9 @@ public class AnimalEmbedding {
     private String embeddingJson;
 
     private Integer dimension;
+
+    public void updateEmbedding(String embeddingJson, int dimension) {
+        this.embeddingJson = embeddingJson;
+        this.dimension = dimension;
+    }
 }

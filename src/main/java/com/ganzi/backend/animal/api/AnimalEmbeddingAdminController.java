@@ -18,7 +18,9 @@ public class AnimalEmbeddingAdminController implements AnimalEmbeddingAdminContr
 
     @PostMapping("/generate")
     public ResponseEntity<ApiResponse<String>> generateAll() {
-        embeddingService.generateAllEmbeddings();
-        return ResponseEntity.ok(ApiResponse.onSuccess("동물 임베딩 생성이 완료되었습니다."));
+        embeddingService.generateAllEmbeddingsAsync();
+
+        return ResponseEntity.accepted()
+                .body(ApiResponse.onSuccess(null));
     }
 }
