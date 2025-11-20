@@ -6,6 +6,8 @@ import com.ganzi.backend.global.code.dto.ApiResponse;
 import com.ganzi.backend.global.security.userdetails.CustomUserDetails;
 import com.ganzi.backend.recommendation.api.doc.RecommendationControllerDoc;
 import com.ganzi.backend.recommendation.application.RecommendationService;
+import com.ganzi.backend.recommendation.application.RecommendationSummaryService;
+import com.ganzi.backend.recommendation.infrastructure.dto.RecommendationSummaryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,6 +24,7 @@ import java.util.List;
 public class RecommendationController implements RecommendationControllerDoc {
 
     private final RecommendationService recommendationService;
+    private final RecommendationSummaryService recommendationSummaryService;
     private final AnimalService animalService;
 
     @GetMapping
@@ -37,5 +40,14 @@ public class RecommendationController implements RecommendationControllerDoc {
                 .toList();
 
         return ResponseEntity.ok(ApiResponse.onSuccess(animals));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<ApiResponse<RecommendationSummaryResponse>> getUserRecommendSummary(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Long userId = userDetails.getUser().getId();
+        RecommendationSummaryResponse summary = recommendationSummaryService.summarizeUserInterest(userId);
+        return ResponseEntity.ok(ApiResponse.onSuccess(summary));
     }
 }
