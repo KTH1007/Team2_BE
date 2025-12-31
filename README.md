@@ -20,6 +20,16 @@
 이 프로젝트는 **AI 임베딩 기반 추천 시스템**으로 사용자의 행동 패턴을 학습하여
 개인에게 최적화된 유기동물을 추천하고, 전국 보호소 정보를 한 곳에서 조회할 수 있게 합니다.
 
+<img width="1320" height="744" alt="image" src="https://github.com/user-attachments/assets/17679e3d-3cb9-4bb7-8d03-dec5e3e59290" />
+<img width="1320" height="744" alt="image" src="https://github.com/user-attachments/assets/daf4115d-417d-40cf-821d-0e18bf4d704a" />
+<img width="1320" height="741" alt="image" src="https://github.com/user-attachments/assets/ac90521e-7057-4d2f-8d77-ea07e7063dc5" />
+<img width="1320" height="741" alt="image" src="https://github.com/user-attachments/assets/4cd092f9-1b5f-4073-ba47-52c7fe9b511b" />
+<img width="1320" height="740" alt="image" src="https://github.com/user-attachments/assets/b7491f79-13b7-4d35-a62f-4554902f2112" />
+<img width="1320" height="740" alt="image" src="https://github.com/user-attachments/assets/ac5b527f-7e91-490d-9ffa-fc97b62984be" />
+<img width="1318" height="741" alt="image" src="https://github.com/user-attachments/assets/3559cdd7-9b3c-4487-8941-b3a036f958e4" />
+<img width="1321" height="742" alt="image" src="https://github.com/user-attachments/assets/2ea854c8-50a3-4b1a-9992-36d0fecb5ef0" />
+
+
 **주요 기능**:
 - 사용자 행동 학습 기반 AI 추천
 - 지역/품종/나이별 유기동물 검색
